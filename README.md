@@ -5,7 +5,7 @@ Este proyecto consiste en el desarrollo de un sistema web que gestiona usuarios,
 
 Tecnologías
 
-Frontend: Angular Base de datos: PostgreSQL / MySQL ORM: Entity Framework Core (EF Core) Control de versiones: Git con flujo GitFlow
+Frontend: Angular ORM: Entity Framework Core (EF Core) Control de versiones: Git con flujo GitFlow
 
 Configuración inicial Clonar el repositorio correspondiente: git clone cd frontend-repo
 
