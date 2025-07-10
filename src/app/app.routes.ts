@@ -8,3 +8,5 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/home/home.routes').then(m => m.HomeRoutes)
     }
 ];
+
+//& Comentario para commit

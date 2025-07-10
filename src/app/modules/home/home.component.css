@@ -1,0 +1,56 @@
+/** Background del Land Page */
+:host {
+    display: block; /*? Convierte <app-home> en un bloque reconocible */
+    height: 100vh;
+    width: 100%;
+
+    background-image: url('/assets/img/landing-page-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/** Cortina de opacidad para background */
+:host::before {
+  content: ""; /** Necesario para crear un pseudo-elemento */
+  position: absolute; /** Posiciona el pseudo-elemento relativo al host sin afectar a los demás elementos*/
+  inset: 0; /** Ocupa todo el espacio del host (top: 0, bottom: 0, right: 0, left: 0) */
+  background-color: rgba(0, 0, 0, 0.3); /** Blanco al 30% */
+  pointer-events: none; /** Pseudo-elemento que no interactúa con eventos del mouse */
+}
+
+/*? Elementos con transición */
+.register-btn{
+    transition: all 0.3s ease-in-out;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.logo{
+    width: 140px;
+    height: 45px;
+    margin: 20px;
+}
+
+.register-btn{
+    padding: .8em 3em;
+    margin: 1em;
+    border-radius: 15px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+
+    color: var(--purple);
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.register-btn:hover{
+    color: white;
+    background-color: var(--purple);
+}
