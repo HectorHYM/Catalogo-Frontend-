@@ -11,7 +11,9 @@
 }
 
 /*? Elementos con transición */
-.register-btn{
+.register-btn,
+.login-btn,
+a{
     transition: all 0.3s ease-in-out;
 }
 
@@ -46,6 +48,11 @@ nav{
     background-color: var(--purple);
 }
 
+main{
+    display: flex;
+    justify-content: space-around;
+}
+
 .title-cont{
     display: flex;
     text-align: center;
@@ -63,18 +70,97 @@ h1{
     color: #FFFFFF;
 }
 
+h2{
+    font-size: 2.2rem;
+}
+
 .alter-text-cont{
-    padding: 15px;
+    padding: 20px;
     border-radius: 12px;
 
     background-color: rgba(0, 0, 0, 0.35);
 }
 
 p{
-    color: white;
+    font-size: 0.9em;
+    color: var(--gray);
 }
 
 .row{
     width: 110px;
     height: 60px;
+}
+
+.form-cont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 60%;
+}
+
+form{
+    height: 80%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 20px;
+
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+fieldset{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    border: none;
+    margin: 60px 0;
+}
+
+legend{
+    display: none;
+}
+
+input{
+    width: 60%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+}
+
+input::placeholder{
+    color: var(--purple);
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+a:link{
+    color: var(--purple);
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+a:hover{
+    color: white;
+}
+
+.login-btn{
+    width: 50%;
+    padding: 15px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    border: none;
+
+    color: white;
+    background-color: var(--purple);
+}
+
+.login-btn:hover{
+    color: var(--purple);
+    background-color: black;
 }
