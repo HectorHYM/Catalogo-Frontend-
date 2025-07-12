@@ -1,0 +1,21 @@
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em;
+
+    color: var(--gray);
+    background-color: var(--soft-black);
+    box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+.left-part {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+.right-part img {
+    width: 200px;
+    height: 65px;
+}
