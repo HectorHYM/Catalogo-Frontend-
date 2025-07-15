@@ -7,8 +7,4 @@ export const routes: Routes = [
         component: HomeComponent,
         loadChildren: () => import('./modules/home/home.routes').then(m => m.HomeRoutes)
     }
-<<<<<<< HEAD
 ];
-=======
-];
->>>>>>> 323555d (Inicialización)
