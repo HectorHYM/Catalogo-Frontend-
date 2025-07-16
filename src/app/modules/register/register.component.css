@@ -20,10 +20,11 @@ form{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5pxs;
+    text-align: center;
+    gap: 5px;
     height: 90vh;
     width: 70%;
-    margin: 2rem;
+    margin: 1.5rem;
     border-radius: 12px;
 
     background-color: rgba(0, 0, 0, 0.5);
@@ -59,7 +60,7 @@ fieldset{
     flex-direction: column;
     align-items: center;
     border: none;
-    margin: 20px;
+    margin: 2em;
     gap: 15px;
     width: 80%;
 }
@@ -79,4 +80,100 @@ legend{
     width: 60%;
     border-radius: 12px;
     border: none;
+}
+
+input::placeholder{
+    color: var(--purple);
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+button{
+    width: 50%;
+    font-size: 1em;
+    padding: 1em;
+    margin: 1em;
+    border: none;
+    border-radius: 12px;
+
+    background-color: var(--purple);
+    color: white;
+    box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+/*^ RESPONSIVE */
+@media(max-width: 376px) and (max-height: 741px){
+    .img-cont{
+        justify-content: center;
+    }
+
+    form{
+        width: 100%;
+    }
+
+    form h1{
+        font-size: 2.3em;
+    }
+
+    form p{
+        font-size: .6em;
+    }
+
+    fieldset{
+        width: 100%;
+        margin: 2em auto 0px auto;
+    }
+
+    .form-group input{
+        width: 80%;
+        padding: 12px;
+    }
+
+    .form-group input::placeholder{
+        font-size: .8em;
+    }
+
+    button{
+        font-size: .8em;
+        margin: auto;
+    }
+}
+
+@media(max-width: 431px) and (max-height: 933px) and (min-width: 376px) and (min-height: 741px){
+    .img-cont{
+        justify-content: center;
+    }
+
+    form{
+        width: 100%;
+    }
+
+    form h1{
+        font-size: 2.3em;
+    }
+
+    form p{
+        font-size: .6em;
+        margin: 10px;
+    }
+
+    fieldset{
+        width: 100%;
+        gap: 35px;
+        margin: 2em auto 0px auto;
+    }
+
+    .form-group input{
+        width: 80%;
+        padding: 12px;
+    }
+
+    .form-group input::placeholder{
+        font-size: .8em;
+    }
+
+    button{
+        font-size: .8em;
+        margin: auto;
+    }
 }
