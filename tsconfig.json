@@ -9,7 +9,7 @@
       "@modules/*": ["app/modules/*"],
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
-      "@environments/*": ["app/environments/*"] //& COMMIT
+      "@environments/*": ["app/environments/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

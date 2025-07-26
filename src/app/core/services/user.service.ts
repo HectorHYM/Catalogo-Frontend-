@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { User } from '@core/models/user';
 
-//& COMMIT
 @Injectable({ providedIn: 'root' })
 export class UserService {
   //* URL base para todas las peticiones relacionadas con usuarios
