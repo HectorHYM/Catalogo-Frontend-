@@ -1,5 +1,5 @@
 <main>
-    <form>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="img-cont">
             <img src="assets/img/Logo-NoBg.png" alt="Logo">
         </div>
@@ -9,22 +9,22 @@
         <fieldset>
             <legend>Datos de registro de usuario</legend>
             <div class="form-group">
-                <input id="name" name="name" type="text" placeholder="Nombre completo" aria-label="Nombre completo" required>
+                <input id="name" formControlName="name" name="name" type="text" placeholder="Nombre completo" aria-label="Nombre completo" required>
             </div>
             <div class="form-group">
-                <input id="username" name="username" type="text" placeholder="Nombre de usuario" aria-label="Nombre de usuario" required>
+                <input id="username" formControlName="username" name="username" type="text" placeholder="Nombre de usuario" aria-label="Nombre de usuario" required>
             </div>
             <div class="form-group">
-                <input id="email" name="email" type="email" placeholder="Correo Electrónico" aria-label="Correo electrónico" required>
+                <input id="email" formControlName="email" name="email" type="email" placeholder="Correo Electrónico" aria-label="Correo electrónico" required>
             </div>
             <div class="form-group">
-                <input id="password" name="password" type="password" placeholder="Contraseña" aria-label="Contraseña" required>
+                <input id="password" formControlName="password" name="password" type="password" placeholder="Contraseña" aria-label="Contraseña" required>
             </div>
             <div class="form-group">
-                <input id="repeat-password" name="repeat-password" type="password" placeholder="Repetir contraseña" aria-label="Repetir contraseña" required>
+                <input id="repeat-password" formControlName="confirmPassword" name="repeat-password" type="password" placeholder="Repetir contraseña" aria-label="Repetir contraseña" required>
             </div>
         </fieldset>
         
-        <button class="inter-semibold">Registrarse</button>
+        <button type="submit" class="inter-semibold" [disabled]="submitting">Registrar</button>
     </form>
 </main>
