@@ -11,6 +11,7 @@ import { UserService } from '@core/services/user.service';
   styleUrl: './register.component.css'
 })
 
+//& COMMIT
 export class RegisterComponent {
   form : FormGroup;
   submitting : boolean = false;
