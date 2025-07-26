@@ -6,7 +6,7 @@ Crear una plataforma segura y administrable que permita a usuarios autenticarse,
 
 Tecnologías
 
-Frontend: Angular
+Angular
 ORM: Entity Framework Core (EF Core)
 Control de versiones: Git (GitFlow)
 
