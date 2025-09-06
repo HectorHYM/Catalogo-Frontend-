@@ -2,6 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { UserService } from '@core/services/user.service';
+import { GeneralResponse } from '@core/interfaces/generalResponse';
+import { SnackbarService } from '@core/services/snackbar.service';
+import { Router } from '@angular/router';
+import { getControlErrors } from '@core/utils/input-errors-validator';
+
+type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string una función que retorne string
 
 @Component({
   selector: 'app-register',
@@ -17,29 +23,62 @@ export class RegisterComponent {
   successMsg : string = '';
   errorMsg : string = '';
   role : string = 'client';
+  isActive : boolean = false;
 
-  constructor(fb : FormBuilder, private userSvc : UserService){
+  constructor(fb : FormBuilder, private userSvc : UserService, private snackBarService : SnackbarService, private router : Router){
     this.form = fb.group({
       name: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(50)]],
-      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      email: ['', [Validators.required, Validators.email, Validators.minLength(7), Validators.maxLength(50)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validators: [this.passwordMatchValidator]
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^\S+$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.minLength(7), Validators.maxLength(50)]]
     });
   }
 
-  //* Método para validar que las contraseñas coincidan
-  private passwordMatchValidator(form: AbstractControl){
-    const pwd = form.get('password')?.value;
-    const confirmPwd = form.get('confirmPassword')?.value;
-    return pwd == confirmPwd ? null : { passwordMisMatch: true};
+  //? Mapa de errores específicos para los controles del formulario
+  private CONTROL_NAME_ERRORS_MAP: Record<string, ErrMsgMapper> = {
+    required: 'El nombre es obligatorio.',
+    minlength: (err) => `El nombre debe llevar al menos ${err.requiredLength} caracteres.`,
+    maxlength: (err) => `La nombre debe llevar como máximo ${err.requiredLength} caracteres.`,
   }
 
-  onSubmit() : void{
+  private CONTROL_USERNAME_ERRORS_MAP: Record<string, ErrMsgMapper> = {
+    required: 'El nombre de usuario es obligatorio.',
+    minlength: (err) => `El nombre de usuario debe llevar al menos ${err.requiredLength} caracteres.`,
+    maxlength: (err) => `La nombre de usuario debe llevar como máximo ${err.requiredLength} caracteres.`,
+    pattern: 'El nombre de usuario no debe llevar espacios.',
+  }
+
+  private CONTROL_EMAIL_ERRORS_MAP: Record<string, ErrMsgMapper> = {
+    required: 'El correo es obligatorio.',
+    email: 'El correo debe tener un formato válido.',
+    minlength: (err) => `El correo debe llevar al menos ${err.requiredLength} caracteres.`,
+    maxlength: (err) => `El correo debe llevar como máximo ${err.requiredLength} caracteres.`,
+  }
+
+  //* Muestra de diversos error dinámicos para el formulario
+  //? user control
+  public getNameErrors() : string[]{
+    return getControlErrors(this.form, 'name', this.CONTROL_NAME_ERRORS_MAP);
+  }
+  //? username control
+  public getUsernameErrors() : string[]{
+    return getControlErrors(this.form, 'username', this.CONTROL_USERNAME_ERRORS_MAP);
+  }
+  //? email control
+  public getEmailErrors() : string[]{
+    return getControlErrors(this.form, 'email', this.CONTROL_EMAIL_ERRORS_MAP);
+  }
+
+  get name() { return this.form.get('name')!; }
+  get username() { return this.form.get('username')!; }
+  get email() { return this.form.get('email')!; }
+
+  async onSubmit() : Promise<boolean> {
+
+    this.submitting = true;
     if(this.form.invalid){ 
       console.error("Formulario inválido");
+
+      this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
       Object.entries(this.form.controls).forEach(([name, control]) => {
@@ -51,45 +90,47 @@ export class RegisterComponent {
         }
       });
 
-      //* Comprobando errores a nivel de formulario (password mismatch)
+      //* Comprobando errores a nivel de formulario
       if(this.form.errors){
+        //^LOG
         console.group('Errores a nivel de formulario');
         console.error('Errores: ', this.form.errors);
-        //^LOG
-        console.error('Valor de password: ', this.form.get('password')?.value);
-        console.error('Valor de confirmPassword: ', this.form.get('confirmPassword')?.value);
         console.groupEnd();
       }
 
-      return
+      return false;
     };
 
-    this.submitting = true;
     this.successMsg = this.errorMsg = '';
 
-    const {confirmPassword, ...payload} = this.form.value;
+    const payload = this.form.value;
     //? Se añade el rol al payload
     const body = {
       ...payload,
-      role: this.role
+      role: this.role,
+      isActive: this.isActive
     }
 
     //^LOG
     console.log("Enviando datos de registro:", body);
 
-    this.userSvc.register(body).subscribe({
-      next: res => {
-        this.successMsg = `Usuario registrado exitosamente con correo: ${res.email}`;
+    //? Cambio de Observable a Promise para manejar mejor los errores
+    await this.userSvc.register(body).then((res: GeneralResponse) => {
+        this.successMsg = `Usuario registrado exitosamente con correo, correo enviado a ${res.data.email}`;
+        this.snackBarService.openSuccessSnackBack(this.successMsg);
         console.log(this.successMsg);
         this.form.reset();
-      },
-      error: err => {
-        this.errorMsg = err.error?.error || "Error al registrar el usuario";
+        this.router.navigate(['/']);
+    }, (error) => {
+        const res = error.error as GeneralResponse;
+        this.errorMsg = res.msg || "Error al registrar el usuario, intentelo más tarde.";
+        this.snackBarService.openErrorSnackBack(this.errorMsg);
         console.error(this.errorMsg);
-      },
-      complete: () => {
-        this.submitting = false;
-      }
+        this.router.navigate(['/']);
     });
+
+    this.submitting = false;
+
+    return true;
   }
 }

@@ -11,7 +11,8 @@
 }
 
 /*? Transiciones */
-button{
+button,
+.tooltip{
     transition: all 0.3s ease-in-out;
 }
 
@@ -52,7 +53,7 @@ form{
 }
 
 form h1{
-    color: white;
+    color: var(--white);
     font-size: 4em;
 }
 
@@ -66,7 +67,7 @@ fieldset{
     align-items: center;
     border: none;
     margin: 2em;
-    gap: 15px;
+    gap: 50px;
     width: 80%;
 }
 
@@ -74,23 +75,87 @@ legend{
     display: none;
 }
 
-.form-group{
+.input-group{
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.form-group input{
+.input-group input{
     padding: 15px;
     width: 60%;
     border-radius: 12px;
-    border: none;
+    border: solid 2px var(--black);
 }
 
-input::placeholder{
+.input-group input:focus{
+    outline: none;
+    border: solid 2px var(--purple);
+}
+
+.input-group input.invalid{
+    border: solid 2px var(--red);
+}
+
+.input-group input::placeholder{
     color: var(--purple);
     font-family: "Inter", sans-serif;
     font-weight: 600;
+}
+
+.input-group input.invalid::placeholder{
+    color: var(--red);
+}
+
+.tooltip{
+    /** Oculto y sin interacciones por defecto **/
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    /** Posicionamiento central derecho **/
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(0, -50%);
+    margin-left: 0.5rem;
+
+    /** Estilos visuales **/
+    background-color: var(--purple);
+    color: var(--white);
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: .8em;
+    line-height: 1.2;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.tooltip.error{
+    background-color: var(--red);
+}
+
+.tooltip::before{
+    content: ''; /*? Hace que exista el pseudoelemento ?*/
+    position: absolute; /*? Se posiciona respecto al .tooltip ?*/
+    top: 50%; /*? Se centra verticalmente ?*/
+    left: -11px; /*? Se posiciona a la izquierda del tooltip ?*/
+    transform: translateY(-50%); /*? Sube la mitad de su propia altura ?*/
+    border-width: 6px; /*? Ancho del triángulo (tamaño de la "flecha")?*/
+    border-style: solid;
+    border-color: transparent var(--white) transparent transparent; /*? Colores ajustados solo al borde derecho del cuadrado y creando un triangulo ?*/
+}
+
+.tooltip.error::before{
+    border-color: transparent var(--red) transparent transparent;
+}
+
+/** El tooltip se muestra al hacer focus o hover al input**/
+.input-group input:focus + .tooltip{
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto; /*? Permite interacciones con el tooltip ?*/
 }
 
 button{
@@ -102,14 +167,14 @@ button{
     border-radius: 12px;
 
     background-color: var(--purple);
-    color: white;
+    color: var(--white);
     cursor: pointer;
     box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
 
 button:hover{
     color: var(--purple);
-    background-color: black;
+    background-color: var(--white);
 }
 
 /*^ RESPONSIVE */
@@ -135,22 +200,47 @@ button:hover{
         margin: 2em auto 0px auto;
     }
 
-    .form-group input{
+    .input-group input{
         width: 80%;
         padding: 12px;
     }
 
-    .form-group input::placeholder{
+    .input-group input::placeholder{
         font-size: .8em;
     }
 
+    .tooltip{
+        /** Se cambia la posición ajustada a celulares **/
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+
+        /** Anchura y salto de línea **/
+        width: 80vw;
+        max-width: 300px;
+        white-space: normal; /*? Permite que el texto se ajuste a múltiples líneas ?*/
+        text-align: center;
+
+        margin-top: 0.5rem;
+        margin-left: 0;
+        font-size: .6em;
+    }
+
+    .tooltip::before{
+        top: -11px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-color: transparent transparent var(--white) transparent;
+    }
+
     button{
+        width: 80%;
         font-size: .8em;
         margin: auto;
     }
 }
 
-@media(max-width: 431px) and (max-height: 933px) and (min-width: 376px) and (min-height: 741px){
+@media(max-width: 431px) and (max-height: 933px) and (min-width: 377px) and (min-height: 742px){
     .img-cont{
         justify-content: center;
     }
@@ -174,16 +264,42 @@ button:hover{
         margin: 2em auto 0px auto;
     }
 
-    .form-group input{
+    .input-group input{
         width: 80%;
         padding: 12px;
+        margin-top: 4vh;
     }
 
-    .form-group input::placeholder{
+    .input-group input::placeholder{
         font-size: .8em;
     }
 
+    .tooltip{
+        /** Se cambia la posición ajustada a celulares **/
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+
+        /** Anchura y salto de línea **/
+        width: 80vw;
+        max-width: 300px;
+        white-space: normal; /*? Permite que el texto se ajuste a múltiples líneas ?*/
+        text-align: center;
+
+        margin-top: 0.5rem;
+        margin-left: 0;
+        font-size: .6em;
+    }
+
+    .tooltip::before{
+        top: -11px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-color: transparent transparent var(--white) transparent;
+    }
+
     button{
+        width: 80%;
         font-size: .8em;
         margin: auto;
     }

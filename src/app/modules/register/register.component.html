@@ -8,20 +8,29 @@
 
         <fieldset>
             <legend>Datos de registro de usuario</legend>
-            <div class="form-group">
-                <input id="name" formControlName="name" name="name" type="text" placeholder="Nombre completo" aria-label="Nombre completo" required>
+            <div class="input-group">
+                <input id="name" [class.invalid]="name.invalid && (name.touched || submitting)" formControlName="name" name="name" type="text" placeholder="Nombre completo" aria-label="Nombre completo" aria-describedby="name-tooltip" required>
+                <span *ngIf="getNameErrors().length > 0" id="name-tooltip" [class.error]="name.invalid && (name.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getNameErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getNameErrors().length - 1">
+                    </ng-container>
+                </span>
             </div>
-            <div class="form-group">
-                <input id="username" formControlName="username" name="username" type="text" placeholder="Nombre de usuario" aria-label="Nombre de usuario" required>
+            <div class="input-group">
+                <input id="username" [class.invalid]="username.invalid && (username.touched || submitting)" formControlName="username" name="username" type="text" placeholder="Nombre de usuario" aria-label="Nombre de usuario" aria-describedby="username-tooltip" required>
+                <span *ngIf="getUsernameErrors().length > 0" id="username-tooltip" [class.error]="username.invalid && (username.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getUsernameErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getUsernameErrors().length - 1">
+                    </ng-container>
+                </span>
             </div>
-            <div class="form-group">
-                <input id="email" formControlName="email" name="email" type="email" placeholder="Correo Electrónico" aria-label="Correo electrónico" required>
-            </div>
-            <div class="form-group">
-                <input id="password" formControlName="password" name="password" type="password" placeholder="Contraseña" aria-label="Contraseña" required>
-            </div>
-            <div class="form-group">
-                <input id="repeat-password" formControlName="confirmPassword" name="repeat-password" type="password" placeholder="Repetir contraseña" aria-label="Repetir contraseña" required>
+            <div class="input-group">
+                <input id="email" [class.invalid]="email.invalid && (email.touched || submitting)" formControlName="email" name="email" type="email" placeholder="Correo Electrónico" aria-label="Correo electrónico" aria-describedby="email-tooltip" required>
+                <span *ngIf="getEmailErrors().length > 0" id="email-tooltip" [class.error]="email.invalid && (email.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getEmailErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getEmailErrors().length - 1">
+                    </ng-container>
+                </span>
             </div>
         </fieldset>
         
