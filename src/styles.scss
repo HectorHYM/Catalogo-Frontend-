@@ -1,0 +1,55 @@
+*,
+html,
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* COLORES */
+:root{
+    --purple: #B200FF; //? Detalles caracteristicos, bordes, botones, etc...
+    --white: #FFFFFF; //? Fondos de elementos, textos, etc...
+    --black: #000000; //? Fondos de elementos, textos, etc...
+    --gray: #B4B4B4; //? Letra del footer
+    --soft-black: #252525; //? Fondo del footer
+    --red: #FF0000; //? Errores, alertas, etc...
+    --cardboard: #F5F0F0; //? Fondo
+}
+
+/* FUENTES */
+.inter-medium {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.inter-semibold {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.inter-bold {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Estilos para los snackbar */
+.success-snackbar{
+  color: var(--white) !important;
+  background-color: var(--purple);
+  border-radius: 12px;
+}
+
+.error-snackbar{
+  color: var(--white) !important;
+  background-color: var(--red);
+  border-radius: 12px;
+}
+
+html, body { height: 100%; }
