@@ -6,6 +6,7 @@ import { User } from '@core/models/user';
 import { Activate } from '@core/models/activate';
 import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Login } from '@core/models/login';
+import { Recover } from '@core/models/recover';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -47,5 +48,10 @@ export class UserService {
       }
       return res;
     });
+  }
+
+  //* Método para recuperar contraseña
+  recoverPassword(recover: Recover): Promise<GeneralResponse<string>>{
+    return lastValueFrom(this.http.post<GeneralResponse<string>>(`${this.baseUrl}/recover-password`, recover));
   }
 }
