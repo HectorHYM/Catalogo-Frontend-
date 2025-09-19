@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom} from 'rxjs';
+import { BehaviorSubject, lastValueFrom} from 'rxjs';
 import { environment } from '@environments/environment';
 import { User } from '@core/models/user';
 import { Activate } from '@core/models/activate';
@@ -14,6 +14,9 @@ export class UserService {
   private baseUrl = `${environment.apiUrl}/users`;
   //^ Almacenamiento de token temporal antes de añadir el refresh token
   private token: string | null = null;
+  //^ Almacenamiento del usuario actual en un BehaviorSubject para reactividad
+  private _currentUser = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this._currentUser.asObservable();
 
   setToken(token: string){
     this.token = token;
@@ -25,6 +28,10 @@ export class UserService {
   
   clearToken(){
     this.token = null;
+  }
+
+  clearCurrentUser(){
+    this._currentUser.next(null);
   }
 
   constructor(private http: HttpClient) {}
@@ -53,5 +60,15 @@ export class UserService {
   //* Método para recuperar contraseña
   recoverPassword(recover: Recover): Promise<GeneralResponse<string>>{
     return lastValueFrom(this.http.post<GeneralResponse<string>>(`${this.baseUrl}/recover-password`, recover));
+  }
+
+  //* Método para cargar el usuario actual basado en el token almacenado
+  loadCurrentUser(): Promise<GeneralResponse<User>>{
+    return lastValueFrom(this.http.get<GeneralResponse<User>>(`${this.baseUrl}/get-user`)).then(res => {
+      if(res.data){
+        this._currentUser.next(res.data);
+      }
+      return res;
+    });
   }
 }
