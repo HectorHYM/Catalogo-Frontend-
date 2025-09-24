@@ -126,17 +126,91 @@ legend{
     display: none;
 }
 
-input{
+.form-group{
+    position: relative;
+}
+
+.form-group input{
     width: 60%;
     padding: 15px;
     border-radius: 12px;
     border: none;
 }
 
-input::placeholder{
+.form-group input::placeholder{
     color: var(--purple);
     font-family: "Inter", sans-serif;
     font-weight: 600;
+}
+
+.form-group input:focus{
+    outline: none;
+    border: solid 2px var(--purple);
+}
+
+.form-group input.invalid{
+    border: solid 2px var(--red);
+}
+
+.form-group input::placeholder{
+    color: var(--purple);
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+.form-group input.invalid::placeholder{
+    color: var(--red);
+}
+
+.tooltip{
+    /** Oculto y sin interacciones por defecto **/
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    /** Posicionamiento central derecho **/
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(0, -50%);
+    margin-left: 0.5rem;
+
+    /** Estilos visuales **/
+    background-color: var(--purple);
+    color: var(--white);
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: .8em;
+    white-space: normal;
+    box-sizing: border-box;
+    line-height: 1.2;
+    z-index: 5;
+}
+
+.tooltip.error{
+    background-color: var(--red);
+}
+
+.tooltip::before{
+    content: ''; /*? Hace que exista el pseudoelemento ?*/
+    position: absolute; /*? Se posiciona respecto al .tooltip ?*/
+    top: 50%; /*? Se centra verticalmente ?*/
+    left: -11px; /*? Se posiciona a la izquierda del tooltip ?*/
+    transform: translateY(-50%); /*? Sube la mitad de su propia altura ?*/
+    border-width: 6px; /*? Ancho del triángulo (tamaño de la "flecha")?*/
+    border-style: solid;
+    border-color: transparent var(--white) transparent transparent; /*? Colores ajustados solo al borde derecho del cuadrado y creando un triangulo ?*/
+}
+
+.tooltip.error::before{
+    border-color: transparent var(--red) transparent transparent;
+}
+
+/** El tooltip se muestra al hacer focus o hover al input**/
+input:focus + .tooltip{
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto; /*? Permite interacciones con el tooltip ?*/
 }
 
 a{
@@ -226,6 +300,10 @@ a:hover{
     input{
         width: 90%;
         padding: 12px;
+    }
+
+    .tooltip{
+        font-size: .6em;
     }
 
     .login-btn{

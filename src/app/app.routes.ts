@@ -6,7 +6,19 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/home/home.routes').then(m => m.HomeRoutes)
     },
     {
-        path: 'register',
+        path: 'users/register',
         loadChildren: () => import('./modules/register/register.routes').then(m => m.RegisterRoutes)
+    },
+    {
+        path: 'users/password',
+        loadChildren: () => import('./modules/password/password.routes').then(m => m.PasswordRoutes)
+    },
+    {
+        path: 'users/recover-password',
+        loadChildren: () => import('./modules/recover-password/recover-password.routes').then(m => m.RecoverPasswordRoutes)
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];
