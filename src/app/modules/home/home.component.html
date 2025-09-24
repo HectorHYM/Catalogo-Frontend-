@@ -30,7 +30,7 @@
                     <input [class.invalid]="password.invalid && (password.touched || submitting)" id="password" formControlName="password" name="password" type="password" placeholder="Contraseña" aria-label="Contraseña" aria-describedby="password-tooltip" required>
                     <span id="password-tooltip" [class.error]="password.invalid && (password.touched || submitting)" class="inter-semibold tooltip">Contraseña obligatoria</span>
                 </div>
-                <a href="">Recuperar contraseña</a>
+                <a [routerLink]="['/users/recover-password']">Recuperar contraseña</a>
             </fieldset>
             <button type="submit" class="login-btn inter-bold" [disabled]="submitting">Iniciar sesión</button>
         </form>
