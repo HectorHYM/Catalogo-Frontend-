@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Login } from '@core/models/login';
+import { User } from '@core/models/user';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
@@ -73,17 +74,36 @@ export class HomeComponent {
       return false;
     }
 
-    await this.userSvc.login(body).then((res: GeneralResponse<string>) => {
-        console.log('Respuesta del servidor: ', res);
-        this.snackBarService.openSuccessSnackBack(res.msg);
+    try{
+      //* 1) Se hace el login a la vez que el token se guarda en el servicio de usuario
+      const currentUser = await this.userSvc.login(body);
+      console.log('Respuesta del servidor al hacer login: ', currentUser);
+      if(!currentUser || !currentUser.data){
+        this.snackBarService.openErrorSnackBack(currentUser.msg || 'Error al iniciar sesión. Inténtelo más tarde.');
+        return false;
+      }
+      
+      const userData = await this.userSvc.loadCurrentUser();
+      console.log('Respuesta del servidor al cargar el usuario: ', userData);
+      if(!userData || !userData.data){
+        this.snackBarService.openErrorSnackBack(userData.msg || 'Error al obtener sus datos. Inténtelo más tarde.');
+        return false;
+      }
 
-        this.form.reset();
-        this.router.navigate(['/init']);
-    }, (error) => {
-        const res = error.error as GeneralResponse<string>;
-        console.error('Error en la petición: ', res);
-        this.snackBarService.openErrorSnackBack(res.msg || 'Error al iniciar sesión. Inténtelo más tarde.');
-    });
+      this.form.reset();
+      this.snackBarService.openSuccessSnackBack(currentUser.msg || 'Sesión iniciada correctamente.');
+      if(userData.data.role === 'client'){
+        this.router.navigate(['/']);
+      }else if(userData.data.role === 'admin'){
+        this.router.navigate(['/users/register']);
+      }else{
+        this.router.navigate(['/']);
+      }
+    }catch(error){
+      console.error('Error en petición de login o al cargar el usuario: ', error);
+      this.snackBarService.openErrorSnackBack('Error al iniciar sesión. Inténtelo más tarde.');
+      return false;
+    }
 
     return true;
   }
