@@ -6,7 +6,15 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/home/home.routes').then(m => m.HomeRoutes)
     },
     {
-        path: 'register',
+        path: 'users/register',
         loadChildren: () => import('./modules/register/register.routes').then(m => m.RegisterRoutes)
+    },
+    {
+        path: 'password',
+        loadChildren: () => import('./modules/password/password.routes').then(m => m.PasswordRoutes)
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];
