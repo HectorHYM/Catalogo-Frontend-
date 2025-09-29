@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Login } from '@core/models/login';
-import { User } from '@core/models/user';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
@@ -92,13 +90,7 @@ export class HomeComponent {
 
       this.form.reset();
       this.snackBarService.openSuccessSnackBack(currentUser.msg || 'Sesión iniciada correctamente.');
-      if(userData.data.role === 'client'){
-        this.router.navigate(['/']);
-      }else if(userData.data.role === 'admin'){
-        this.router.navigate(['/users/register']);
-      }else{
-        this.router.navigate(['/']);
-      }
+      this.router.navigate(['/menu']);
     }catch(error){
       console.error('Error en petición de login o al cargar el usuario: ', error);
       this.snackBarService.openErrorSnackBack('Error al iniciar sesión. Inténtelo más tarde.');

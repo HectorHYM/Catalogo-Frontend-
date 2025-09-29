@@ -30,6 +30,10 @@ export class UserService {
     this.token = null;
   }
 
+  getCurrentUser() : User | null{
+    return this._currentUser.value;
+  }
+
   clearCurrentUser(){
     this._currentUser.next(null);
   }

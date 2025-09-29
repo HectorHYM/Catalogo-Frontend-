@@ -18,6 +18,10 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/recover-password/recover-password.routes').then(m => m.RecoverPasswordRoutes)
     },
     {
+        path: 'menu',
+        loadChildren: () => import('./modules/menu/menu.routes').then(m => m.MenuRoutes)
+    },
+    {
         path: '**',
         redirectTo: ''
     }
