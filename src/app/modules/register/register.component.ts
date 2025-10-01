@@ -75,10 +75,9 @@ export class RegisterComponent {
   async onSubmit() : Promise<boolean> {
 
     this.submitting = true;
+    this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
     if(this.form.invalid){ 
       console.error("Formulario inválido");
-
-      this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
       Object.entries(this.form.controls).forEach(([name, control]) => {
@@ -97,7 +96,8 @@ export class RegisterComponent {
         console.error('Errores: ', this.form.errors);
         console.groupEnd();
       }
-
+      
+      this.submitting = false;
       return false;
     };
 

@@ -120,6 +120,7 @@ export class PasswordComponent implements OnInit{
         console.groupEnd();
       }
 
+      this.submitting = false;
       return false;
     }
 
