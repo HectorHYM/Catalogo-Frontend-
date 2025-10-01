@@ -57,6 +57,7 @@ export class RecoverPasswordComponent{
         }
       });
 
+      this.submitting = false;
       return false;
     }
 

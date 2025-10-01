@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Login } from '@core/models/login';
-import { User } from '@core/models/user';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
@@ -71,6 +69,7 @@ export class HomeComponent {
         console.groupEnd();
       }
 
+      this.submitting = false;
       return false;
     }
 
