@@ -23,8 +23,9 @@ export class PasswordComponent implements OnInit{
   stringMsg : string | null = '';
   errorMsg : string = '';
   token : string | null = null;
+  flow: 'set' | 'recover' | null = null;
 
-  constructor(fb : FormBuilder, private userSvc : UserService, private router : Router, private snackBarService : SnackbarService ){
+  constructor(fb : FormBuilder, private userSvc : UserService, private router : Router, private snackBarService : SnackbarService){
     this.form = fb.group({
       password: ['', [Validators.required, Validators.minLength(8), this.hasLowerCase(), this.hasUpperCase(), this.hasSpecialChar(), this.hasNumber()]],
       repeat_password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).+$/)]]
@@ -83,6 +84,7 @@ export class PasswordComponent implements OnInit{
   ngOnInit(): void {
     const urlParams = new URLSearchParams(window.location.search);
     this.token = urlParams.get('token');
+    this.flow = urlParams.get('flow') as 'set' | 'recover' | null;
   }
 
   //* Método para validar que las contraseñas coincidan
@@ -128,6 +130,7 @@ export class PasswordComponent implements OnInit{
       token: token,
       password: password
     }
+
     //^LOG
     // console.log("Enviando datos de registro:", body);
 
