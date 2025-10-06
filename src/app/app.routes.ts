@@ -7,12 +7,12 @@ export const routes: Routes = [
     },
     {
         path: 'users/register',
-        loadComponent: () => import('./modules/register/register.component').then(m => m.RegisterComponent)
+        loadComponent: () => import('./modules/register/register.component').then(m => m.RegisterComponent),
+        data: { flow: 'set' }
     },
     {
         path: 'users/password',
-        loadComponent: () => import('./modules/password/password.component').then(m => m.PasswordComponent),
-        data: { flow: 'set' }
+        loadComponent: () => import('./modules/password/password.component').then(m => m.PasswordComponent)
     },
     {
         path: 'users/recover-password',

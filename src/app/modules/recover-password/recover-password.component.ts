@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Recover } from '@core/models/recover';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string una función que retorne string
 
@@ -17,12 +17,13 @@ type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string u
   templateUrl: './recover-password.component.html',
   styleUrl: './recover-password.component.css'
 })
-export class RecoverPasswordComponent{
+export class RecoverPasswordComponent implements OnInit{
   form : FormGroup;
   submitting : boolean = false;
   errorMsg : string = '';
+  flow: 'set' | 'recover' = 'recover';
 
-  constructor(fb: FormBuilder, private userSvc: UserService, private sbService: SnackbarService, private router: Router) { 
+  constructor(fb: FormBuilder, private userSvc: UserService, private sbService: SnackbarService, private router: Router, private route: ActivatedRoute) { 
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -39,17 +40,23 @@ export class RecoverPasswordComponent{
     return getControlErrors(this.form, 'email', this.CONTROL_ERRORS_MAP);
   } 
 
+  ngOnInit(): void {
+    this.flow = this.route.snapshot.data['flow'] || 'recover';
+  }
+
   async onSubmit(): Promise<boolean>{
     this.submitting = true;
     const email = this.form.value.email;
 
     if(this.form.invalid){
+      //^LOG
       console.error("Formulario inválido");
       this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
       Object.entries(this.form.controls).forEach(([name, control]) => {
         if(control.invalid){
+          //^LOG
           console.group(`Control inválido: ${name}`);
           console.error('Valor actual: ', control.value);
           console.error('Errores: ', control.errors);
@@ -63,10 +70,13 @@ export class RecoverPasswordComponent{
 
     const body: Recover = {
       email: email,
-      tokenType: 'recover'
+      tokenType: 'recover',
+      flow: this.flow
     }
 
     await this.userSvc.recoverPassword(body).then((res: GeneralResponse<string>) => {
+      //^LOG
+      console.log("Datos enviados:", body);
       this.sbService.openSuccessSnackBack(res.msg);
       this.form.reset();
       //* Se redirige a home para el inicio de sesión

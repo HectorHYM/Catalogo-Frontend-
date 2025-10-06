@@ -4,4 +4,5 @@ export interface User {
     email: string;
     role: string;
     isActive: boolean;
+    flow: 'set' | 'recover';
 }
