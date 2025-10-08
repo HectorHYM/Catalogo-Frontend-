@@ -6,6 +6,7 @@ import { Login } from '@core/models/login';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
+import { min } from 'rxjs';
 
 type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string una función que retorne string
 
@@ -23,18 +24,27 @@ export class HomeComponent {
   constructor(fb : FormBuilder, private userSvc : UserService, private snackBarService : SnackbarService, private router : Router){
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
   //? Mapa de errores específicos para los controles del formulario
   private CONTROL_ERRORS_MAP: Record<string, ErrMsgMapper> = {
     required: 'El correo es obligatorio.',
-    email: 'El correo debe tener un formato válido.'
+    email: 'El correo debe tener un formato válido.',
+  }
+
+  private PASSWORD_ERRORS_MAP: Record<string, ErrMsgMapper> = {
+    required: 'La contraseña es obligatoria.',
+    minlength: (err) => `La contraseña debe tener al menos ${err.requiredLength} caracteres.`
   }
 
   public getEmailErrors() : string[]{
     return getControlErrors(this.form, 'email', this.CONTROL_ERRORS_MAP);
+  }
+
+  public getPasswordErrors() : string[]{
+    return getControlErrors(this.form, 'password', this.PASSWORD_ERRORS_MAP);
   }
 
   get email() { return this.form.get('email')!; };
@@ -78,7 +88,7 @@ export class HomeComponent {
       const currentUser = await this.userSvc.login(body);
       console.log('Respuesta del servidor al hacer login: ', currentUser);
       if(!currentUser || !currentUser.data){
-        this.snackBarService.openErrorSnackBack(currentUser.msg || 'Error al iniciar sesión. Inténtelo más tarde.');
+        this.snackBarService.openErrorSnackBack(currentUser.msg || 'Cuenta no activa. Por favor establezca su contraseña.');
         return false;
       }
       
@@ -98,10 +108,13 @@ export class HomeComponent {
       }else{
         this.router.navigate(['/']);
       }
-    }catch(error){
+    }catch(error: any){
       console.error('Error en petición de login o al cargar el usuario: ', error);
-      this.snackBarService.openErrorSnackBack('Error al iniciar sesión. Inténtelo más tarde.');
+      const serverMsg = error?.error?.msg || 'Error al iniciar sesión. Inténtelo más tarde.';
+      this.snackBarService.openErrorSnackBack(serverMsg);
       return false;
+    }finally{
+      this.submitting = false;
     }
 
     return true;
