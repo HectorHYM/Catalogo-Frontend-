@@ -85,26 +85,25 @@ export class RegisterComponent implements OnInit{
 
     if(this.form.invalid){ 
       //^LOG
-      console.error("Formulario inválido");
+      //console.error("Formulario inválido");
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
-      Object.entries(this.form.controls).forEach(([name, control]) => {
+      //^LOG
+      /*Object.entries(this.form.controls).forEach(([name, control]) => {
         if(control.invalid){
-          //^LOG
           console.group(`Control inválido: ${name}`);
           console.error('Valor actual: ', control.value);
           console.error('Errores: ', control.errors);
           console.groupEnd();
         }
-      });
-
+      });*/
       //* Comprobando errores a nivel de formulario
-      if(this.form.errors){
-        //^LOG
+      //^LOG
+      /*if(this.form.errors){
         console.group('Errores a nivel de formulario');
         console.error('Errores: ', this.form.errors);
         console.groupEnd();
-      }
+      }*/
       
       this.submitting = false;
       return false;
@@ -122,14 +121,14 @@ export class RegisterComponent implements OnInit{
     }
 
     //^LOG
-    console.log("Enviando datos de registro:", body);
+    //console.log("Enviando datos de registro:", body);
 
     //? Cambio de Observable a Promise para manejar mejor los errores
     await this.userSvc.register(body).then((res: GeneralResponse) => {
         this.successMsg = `Usuario registrado exitosamente con correo, correo enviado a ${res.data.email}`;
         this.snackBarService.openSuccessSnackBack(this.successMsg);
         //^LOG
-        console.log(this.successMsg);
+        //console.log(this.successMsg);
         this.form.reset();
         this.router.navigate(['/']);
     }, (error) => {
@@ -137,7 +136,7 @@ export class RegisterComponent implements OnInit{
         this.errorMsg = res.msg || "Error al registrar el usuario, intentelo más tarde.";
         this.snackBarService.openErrorSnackBack(this.errorMsg);
         //^LOG
-        console.error(this.errorMsg);
+        //console.error(this.errorMsg);
         this.router.navigate(['/']);
     });
 
