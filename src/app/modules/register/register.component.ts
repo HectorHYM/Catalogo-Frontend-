@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { UserService } from '@core/services/user.service';
 import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { SnackbarService } from '@core/services/snackbar.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { getControlErrors } from '@core/utils/input-errors-validator';
+import { User } from '@core/models/user';
 
 type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string una función que retorne string
 
@@ -17,15 +18,16 @@ type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string u
   styleUrl: './register.component.css'
 })
 
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   form : FormGroup;
   submitting : boolean = false;
   successMsg : string = '';
   errorMsg : string = '';
   role : string = 'client';
   isActive : boolean = false;
+  flow: 'set' | 'recover' = 'set'; //* Por defecto es 'set', pero si es 'recover' se cambia el texto en la vista
 
-  constructor(fb : FormBuilder, private userSvc : UserService, private snackBarService : SnackbarService, private router : Router){
+  constructor(fb : FormBuilder, private userSvc : UserService, private snackBarService : SnackbarService, private router : Router, private route: ActivatedRoute){
     this.form = fb.group({
       name: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(50)]],
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^\S+$/)]],
@@ -72,32 +74,38 @@ export class RegisterComponent {
   get username() { return this.form.get('username')!; }
   get email() { return this.form.get('email')!; }
 
+  ngOnInit(): void {
+    this.flow = this.route.snapshot.data['flow'] || 'set';
+  }
+
   async onSubmit() : Promise<boolean> {
-
     this.submitting = true;
-    if(this.form.invalid){ 
-      console.error("Formulario inválido");
+    this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
+    const flow = this.flow;
 
-      this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
+    if(this.form.invalid){ 
+      //^LOG
+      //console.error("Formulario inválido");
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
-      Object.entries(this.form.controls).forEach(([name, control]) => {
+      //^LOG
+      /*Object.entries(this.form.controls).forEach(([name, control]) => {
         if(control.invalid){
           console.group(`Control inválido: ${name}`);
           console.error('Valor actual: ', control.value);
           console.error('Errores: ', control.errors);
           console.groupEnd();
         }
-      });
-
+      });*/
       //* Comprobando errores a nivel de formulario
-      if(this.form.errors){
-        //^LOG
+      //^LOG
+      /*if(this.form.errors){
         console.group('Errores a nivel de formulario');
         console.error('Errores: ', this.form.errors);
         console.groupEnd();
-      }
-
+      }*/
+      
+      this.submitting = false;
       return false;
     };
 
@@ -105,27 +113,30 @@ export class RegisterComponent {
 
     const payload = this.form.value;
     //? Se añade el rol al payload
-    const body = {
+    const body: User = {
       ...payload,
       role: this.role,
-      isActive: this.isActive
+      isActive: this.isActive,
+      flow: flow
     }
 
     //^LOG
-    console.log("Enviando datos de registro:", body);
+    //console.log("Enviando datos de registro:", body);
 
     //? Cambio de Observable a Promise para manejar mejor los errores
     await this.userSvc.register(body).then((res: GeneralResponse) => {
         this.successMsg = `Usuario registrado exitosamente con correo, correo enviado a ${res.data.email}`;
         this.snackBarService.openSuccessSnackBack(this.successMsg);
-        console.log(this.successMsg);
+        //^LOG
+        //console.log(this.successMsg);
         this.form.reset();
         this.router.navigate(['/']);
     }, (error) => {
         const res = error.error as GeneralResponse;
         this.errorMsg = res.msg || "Error al registrar el usuario, intentelo más tarde.";
         this.snackBarService.openErrorSnackBack(this.errorMsg);
-        console.error(this.errorMsg);
+        //^LOG
+        //console.error(this.errorMsg);
         this.router.navigate(['/']);
     });
 

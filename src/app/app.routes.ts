@@ -3,19 +3,21 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
-        loadChildren: () => import('./modules/home/home.routes').then(m => m.HomeRoutes)
+        loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent)
     },
     {
         path: 'users/register',
-        loadChildren: () => import('./modules/register/register.routes').then(m => m.RegisterRoutes)
+        loadComponent: () => import('./modules/register/register.component').then(m => m.RegisterComponent),
+        data: { flow: 'set' }
     },
     {
         path: 'users/password',
-        loadChildren: () => import('./modules/password/password.routes').then(m => m.PasswordRoutes)
+        loadComponent: () => import('./modules/password/password.component').then(m => m.PasswordComponent)
     },
     {
         path: 'users/recover-password',
-        loadChildren: () => import('./modules/recover-password/recover-password.routes').then(m => m.RecoverPasswordRoutes)
+        loadComponent: () => import('./modules/recover-password/recover-password.component').then(m => m.RecoverPasswordComponent),
+        data: { flow: 'recover' }
     },
     {
         path: 'menu',

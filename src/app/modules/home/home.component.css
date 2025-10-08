@@ -13,6 +13,7 @@
 /*? Elementos con transición */
 .register-btn,
 .login-btn,
+.tooltip,
 a{
     transition: all 0.3s ease-in-out;
 }
@@ -208,6 +209,13 @@ legend{
 
 /** El tooltip se muestra al hacer focus o hover al input**/
 input:focus + .tooltip{
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto; /*? Permite interacciones con el tooltip ?*/
+}
+
+/** El tooltip se muestra si el input es inválido */
+.form-group input.invalid + .tooltip{
     visibility: visible;
     opacity: 1;
     pointer-events: auto; /*? Permite interacciones con el tooltip ?*/
