@@ -50,19 +50,19 @@ export class RecoverPasswordComponent implements OnInit{
 
     if(this.form.invalid){
       //^LOG
-      console.error("Formulario inválido");
+      //console.error("Formulario inválido");
       this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
-      Object.entries(this.form.controls).forEach(([name, control]) => {
+      //^LOG
+      /*Object.entries(this.form.controls).forEach(([name, control]) => {
         if(control.invalid){
-          //^LOG
           console.group(`Control inválido: ${name}`);
           console.error('Valor actual: ', control.value);
           console.error('Errores: ', control.errors);
           console.groupEnd();
         }
-      });
+      });*/
 
       this.submitting = false;
       return false;
@@ -76,7 +76,7 @@ export class RecoverPasswordComponent implements OnInit{
 
     await this.userSvc.recoverPassword(body).then((res: GeneralResponse<string>) => {
       //^LOG
-      console.log("Datos enviados:", body);
+      //console.log("Datos enviados:", body);
       this.sbService.openSuccessSnackBack(res.msg);
       this.form.reset();
       //* Se redirige a home para el inicio de sesión

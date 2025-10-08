@@ -6,7 +6,6 @@ import { Login } from '@core/models/login';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { UserService } from '@core/services/user.service';
 import { getControlErrors } from '@core/utils/input-errors-validator';
-import { min } from 'rxjs';
 
 type ErrMsgMapper = string | ((err: any) => string); //? Solo puede ser string una función que retorne string
 
@@ -63,21 +62,21 @@ export class HomeComponent {
     if(this.form.invalid){
       this.form.markAllAsTouched();
 
-      Object.entries(this.form.controls).forEach(([name, control]) => {
+      //^LOG
+      /*Object.entries(this.form.controls).forEach(([name, control]) => {
         if(control.invalid){
           console.group(`Control inválido: ${name}`);
           console.error('Valor actual: ', control.value);
           console.error('Errores: ', control.errors);
           console.groupEnd();
         }
-      });
-
-      if(this.form.errors){
-        //^LOG
+      });*/
+      //^LOG
+      /*if(this.form.errors){
         console.group('Errores a nivel de formulario');
         console.error('Errores: ', this.form.errors);
         console.groupEnd();
-      }
+      }*/
 
       this.submitting = false;
       return false;
@@ -86,14 +85,16 @@ export class HomeComponent {
     try{
       //* 1) Se hace el login a la vez que el token se guarda en el servicio de usuario
       const currentUser = await this.userSvc.login(body);
-      console.log('Respuesta del servidor al hacer login: ', currentUser);
+      //^LOG
+      //console.log('Respuesta del servidor al hacer login: ', currentUser);
       if(!currentUser || !currentUser.data){
         this.snackBarService.openErrorSnackBack(currentUser.msg || 'Cuenta no activa. Por favor establezca su contraseña.');
         return false;
       }
       
       const userData = await this.userSvc.loadCurrentUser();
-      console.log('Respuesta del servidor al cargar el usuario: ', userData);
+      //^LOG
+      //console.log('Respuesta del servidor al cargar el usuario: ', userData);
       if(!userData || !userData.data){
         this.snackBarService.openErrorSnackBack(userData.msg || 'Error al obtener sus datos. Inténtelo más tarde.');
         return false;

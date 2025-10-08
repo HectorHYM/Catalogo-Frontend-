@@ -89,8 +89,8 @@ export class PasswordComponent implements OnInit{
       this.flow = params.get('flow') === 'set' ? 'set' : 'recover';
 
       //^LOG
-      console.log("Token obtenido de la URL: ", this.token);
-      console.log("Flujo obtenido de la URL: ", this.flow);
+      /*console.log("Token obtenido de la URL: ", this.token);
+      console.log("Flujo obtenido de la URL: ", this.flow);*/
 
       const clean = window.location.pathname + window.location.search;
       window.history.replaceState({}, document.title, clean);
@@ -111,7 +111,8 @@ export class PasswordComponent implements OnInit{
     const password = this.form.value.password;
 
     if(this.form.invalid){
-      console.error("Formulario inválido");
+      //^LOG
+      //console.error("Formulario inválido");
       this.form.markAllAsTouched(); //? Marca todos los controles como tocados para mostrar errores
 
       //* Se recorren todos los controles del FormGroup para obtener sus errores
@@ -125,12 +126,12 @@ export class PasswordComponent implements OnInit{
       });
 
       //* Comprobando errores a nivel de formulario (password mismatch)
-      if(this.form.errors){
-        //^LOG
+      //^LOG
+      /*if(this.form.errors){
         console.group('Errores a nivel de formulario');
         console.error('Errores: ', this.form.errors);
         console.groupEnd();
-      }
+      }*/
 
       this.submitting = false;
       return false;
@@ -147,11 +148,10 @@ export class PasswordComponent implements OnInit{
     //? Cambio de Observable a Promise para manejar mejor los errores
     await this.userSvc.activate(body).then((res: GeneralResponse) => {
         this.stringMsg = res.msg;
-
         this.snackBarService.openSuccessSnackBack(this.stringMsg);
 
         //^ LOG
-        console.log(res);
+        //console.log(res);
 
         //* Se limpia el token de la URL para evitar leaks
         const url = window.location.pathname;
