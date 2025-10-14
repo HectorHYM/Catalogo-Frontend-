@@ -1,22 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RoleDirective } from "@core/directives/role.directive";
-import { User } from '@core/models/user';
-import { UserService } from '@core/services/user.service';
+import { Component } from '@angular/core';
+import { SettingsButtonComponent } from "./layouts/settings-button/settings-button.component";
+import { SidebarComponent } from "@shared/components/sidebar/sidebar.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
-  imports: [RoleDirective, CommonModule],
+  imports: [CommonModule, SettingsButtonComponent, SidebarComponent, RouterOutlet],
   standalone: true,
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
-export class MenuComponent implements OnInit{
-  user: User | null = null;
+export class MenuComponent {
 
-  constructor(private userSvc: UserService) {}
-  ngOnInit(): void {
-    this.user = this.userSvc.getCurrentUser();
-    console.log("Sesión de usuario actual: ", this.user);
-  }
 }

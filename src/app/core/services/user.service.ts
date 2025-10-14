@@ -18,8 +18,16 @@ export class UserService {
   private _currentUser = new BehaviorSubject<User | null>(null);
   public currentUser$ = this._currentUser.asObservable();
 
+  constructor(private http: HttpClient) {
+    //* Se inicializa el token desde el almacenamiento local si existe
+    const tokenStored = localStorage.getItem('token');
+    if(tokenStored) this.token = tokenStored;
+  }
+
+  //^ Helpers token
   setToken(token: string){
     this.token = token;
+    localStorage.setItem('token', token);
   }
 
   getToken() : string | null{
@@ -28,18 +36,31 @@ export class UserService {
   
   clearToken(){
     this.token = null;
+    localStorage.removeItem('token');
   }
 
-  getCurrentUser() : User | null{
+  //^ Helpers usuario actual
+  getCurrentUser(): User | null{
     return this._currentUser.value;
+  }
+
+  //? Alias sincrónico
+  public getCurrentUserValue(): User | null{
+    return this._currentUser.value;
+  }
+
+  setCurrentUser(user: User){
+    this._currentUser.next(user);
+    if (user) localStorage.setItem('user', JSON.stringify(user));
+    else localStorage.removeItem('user');
   }
 
   clearCurrentUser(){
     this._currentUser.next(null);
+    localStorage.removeItem('user');
   }
 
-  constructor(private http: HttpClient) {}
-
+  //^ API Methods
   //* Método para registrar un nuevo usuario
   //* Retorna un Observable convertido a Promesa con la respuesta del servidor
   register(user: User): Promise<GeneralResponse<User>> {
@@ -70,9 +91,27 @@ export class UserService {
   loadCurrentUser(): Promise<GeneralResponse<User>>{
     return lastValueFrom(this.http.get<GeneralResponse<User>>(`${this.baseUrl}/get-user`)).then(res => {
       if(res.data){
-        this._currentUser.next(res.data);
+        this.setCurrentUser(res.data);
       }
       return res;
+    }).catch(err => {
+      this.clearToken();
+      this.clearCurrentUser();
+      throw err;
     });
+  }
+
+  //^ Util Methods
+  //? Método util para guards el cual asegura que, si existe token, se cargue el usuario actual.
+  //? Retorna una promesa.
+  ensureCurrentUserLoaded(): Promise<User | null>{
+    if(this._currentUser.value){
+      return Promise.resolve(this._currentUser.value);
+    }
+    const token = this.getToken();
+    if (!token) return Promise.resolve(null);
+    
+    //* Si hay token, se intenta cargar el usuario actual
+    return this.loadCurrentUser().then(res => res.data || null).catch(() => null);
   }
 }

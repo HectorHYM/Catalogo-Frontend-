@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent),
+        pathMatch: 'full' //? pathMatch es usado para especificar como se debe hacer el match de la ruta. 'full' significa que la ruta debe coincidir exactamente.
     },
     {
         path: 'users/register',
@@ -21,7 +23,8 @@ export const routes: Routes = [
     },
     {
         path: 'menu',
-        loadChildren: () => import('./modules/menu/menu.routes').then(m => m.MenuRoutes)
+        loadChildren: () => import('./modules/menu/menu.routes').then(m => m.MenuRoutes),
+        canActivate: [AuthGuard]
     },
     {
         path: '**',
