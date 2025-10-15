@@ -1,6 +1,7 @@
 <div class="menu-shell">
-    <app-settings-button></app-settings-button>
-    <app-sidebar></app-sidebar>
+    <app-settings-button (toggle)="toggleSidebar()"></app-settings-button>
+    <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+    <div *ngIf="sidebarOpen" (click)="toggleSidebar()" class="backdrop" aria-hidden="true"></div>
     <div class="main-content">
         <router-outlet></router-outlet>
     </div>

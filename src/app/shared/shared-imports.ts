@@ -1,10 +1,10 @@
-import { FooterComponent } from "./components/footer/footer.component";
-import { LoaderComponent } from "./components/loader/loader.component";
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
-export { FooterComponent };
-export { LoaderComponent };
+export { CommonModule };
+export { MatIconModule };
 
 export const SHARED_IMPORTS = [
-    FooterComponent,
-    LoaderComponent
+    CommonModule,
+    MatIconModule
 ]

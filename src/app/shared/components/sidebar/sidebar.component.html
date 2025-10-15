@@ -1,25 +1,22 @@
-<main>
-    <div class="menu-cont">
-        <nav class="menu">
-            <div class="perfil-cont">
-                <img class="profile-photo" src="assets/img/coke.jpg" alt="Foto de perfil">
-                <div class="perfi-data-cont">
-                    <h2 class="inter-bold">{{ user?.username }}</h2>
-                    <h4 class="inter-bold">{{user?.name}}</h4>
-                    <p class="edit-profile-opt inter-semibold">Editar perfil de usuario</p>
-                </div>
+<aside [class.open]="isOpen" class="menu-cont" role="navigation" [attr.aria-hidden]="false">
+    <nav class="menu">
+        <div class="perfil-cont">
+            <img class="profile-photo" src="assets/img/coke.jpg" alt="Foto de perfil">
+            <div class="perfi-data-cont">
+                <h2 class="inter-bold">{{ user?.username }}</h2>
+                <h4 class="inter-bold">{{user?.name}}</h4>
+                <p class="edit-profile-opt inter-semibold">Editar perfil de usuario</p>
             </div>
-
-            <ul>
-                <li class="inter-medium">Inicio ⛰︎</li>
-                <hr>
-                <li class="inter-medium" *appRole="'client'">Favoritos ❤</li>
-                <hr *appRole="'client'">
-                <li class="inter-medium" *appRole="'admin'">Usuarios ☻</li>
-                <hr *appRole="'admin'">
-                <li class="inter-medium" *appRole="'admin'">Productos ✚</li>
-                <hr *appRole="'admin'">
-            </ul>
-        </nav>
-    </div>
-</main>
+        </div>
+        <ul>
+            <li class="inter-medium">Inicio ⛰︎</li>
+            <hr>
+            <li class="inter-medium" *appRole="'client'">Favoritos ❤</li>
+            <hr *appRole="'client'">
+            <li class="inter-medium" *appRole="'admin'">Usuarios ☻</li>
+            <hr *appRole="'admin'">
+            <li class="inter-medium" *appRole="'admin'">Productos ✚</li>
+            <hr *appRole="'admin'">
+        </ul>
+    </nav>
+</aside>

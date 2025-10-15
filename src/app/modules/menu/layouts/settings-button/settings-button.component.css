@@ -1,0 +1,6 @@
+.settings-btn-cont{
+    display: flex;
+    justify-content: flex-end;
+    background-color: var(--cardboard);
+    padding: 12px;
+}

@@ -12,5 +12,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './menu.component.css'
 })
 export class MenuComponent {
-
+  sidebarOpen: boolean = false;
+  toggleSidebar(){ this.sidebarOpen = !this.sidebarOpen; }
 }

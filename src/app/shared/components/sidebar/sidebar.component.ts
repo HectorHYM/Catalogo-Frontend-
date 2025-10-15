@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RoleDirective } from "@core/directives/role.directive";
 import { User } from '@core/models/user';
 import { UserService } from '@core/services/user.service';
@@ -13,6 +13,7 @@ import { UserService } from '@core/services/user.service';
 })
 export class SidebarComponent implements OnInit{
   user: User | null = null;
+  @Input() isOpen: boolean = false;
 
   constructor(private userSvc: UserService) {}
   ngOnInit(): void {
