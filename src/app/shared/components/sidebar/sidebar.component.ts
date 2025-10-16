@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit{
   constructor(private userSvc: UserService) {}
   ngOnInit(): void {
     this.user = this.userSvc.getCurrentUser();
-    console.log("Sesión de usuario actual: ", this.user);
+    //^ log
+    //console.log("Sesión de usuario actual: ", this.user);
   }
 }
