@@ -1,4 +1,11 @@
-<div class="products-cont">
+<ng-container *ngIf="state$ | async as DashboardProps" class="products-cont">
     <!--<app-product-card *ngFor="let product of products" [product]="product"></app-product-card>-->
-    <h1>Lista principal de productos</h1>
-</div>
+    <!--~ Aparece solo si loading es true ~-->
+    <div *ngIf="DashboardProps.loading" class="loading">Cargando...</div>
+    <!--~ Aparece solo si error es true ~-->
+    <div *ngIf="DashboardProps.error" class="error">{{ DashboardProps.error }}</div>
+    <!--~ Aparece solo si loading es false y hay elementos en data ~-->
+    <div *ngIf="!DashboardProps.loading && DashboardProps.data?.length" class="cards-cont">
+        <app-product-card *ngFor="let p of DashboardProps.data" [product]="p"></app-product-card>
+    </div>
+</ng-container>

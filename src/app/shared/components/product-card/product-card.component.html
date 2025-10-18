@@ -1,0 +1,10 @@
+<article class="card" role="group" [attr.aria-label]="'Tarjeta de producto para: ' + product.name">
+    <img src="assets/img/product_default.png" class="product-img" [alt]="'Imagen del producto: ' + product.name" loading="lazy">
+    <div class="body">
+        <h3 class="inter-semibold">{{ product.name }}</h3>
+        <div>
+            <p class="inter-medium">${{ product.price }}</p>
+            <mat-icon aria-label="Añadir a favoritos">favorite</mat-icon>
+        </div>
+    </div>
+</article>

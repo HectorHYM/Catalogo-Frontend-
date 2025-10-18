@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { GeneralResponse } from '@core/interfaces/generalResponse';
 import { Product } from '@core/models/product';
 import { environment } from '@environments/environment';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ProductService {
 
   //^ API Methods
   //* Método para obtener todos los productos
-  getAllProducts(): Promise<GeneralResponse<Product>>{
-    return lastValueFrom(this.http.get<GeneralResponse<Product>>(`${this.baseUrl}/get-products`));
+  getAllProducts(): Observable<GeneralResponse<Product[]>>{
+    return this.http.get<GeneralResponse<Product[]>>(`${this.baseUrl}/get-products`);
   }
 }

@@ -4,3 +4,12 @@
     background-color: var(--cardboard);
     padding: 12px;
 }
+
+.settings-btn{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover{
+    color: var(--purple);
+}

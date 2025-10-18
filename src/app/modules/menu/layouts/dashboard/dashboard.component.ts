@@ -1,19 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
+import { GeneralResponse } from '@core/interfaces/generalResponse';
+import { Product } from '@core/models/product';
 import { ProductService } from '@core/services/product.service';
+import { ProductCardComponent } from '@shared/shared-components';
+import { catchError, map, Observable, of, startWith } from 'rxjs';
+
+type DashboardProps = { loading: boolean; data: Product[] | null; error: string | null; }
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, ProductCardComponent],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
-  constructor(private productSvc: ProductService) { }
-  async ngOnInit(): Promise<void> {
-    let products = (await this.productSvc.getAllProducts()).data;
-    //^ log
-    console.log('Productos cargados: ', products);
+export class DashboardComponent {
+  state$: Observable<DashboardProps>;
+  constructor(private productSvc: ProductService) {
+    this.state$ = this.productSvc.getAllProducts().pipe(
+      map((res: GeneralResponse<Product[]>) => ({ loading: false, data: res.data, error: null} as DashboardProps)),
+      startWith({ loading: true, data: null, error: null } as DashboardProps),
+      catchError((error: GeneralResponse<Product[]>) => of({ loading: false, data: null, error: error.msg || 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
+    );
   }
 }
