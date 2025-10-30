@@ -21,7 +21,7 @@ export class DashboardComponent {
     this.state$ = this.productSvc.getAllProducts().pipe(
       map((res: GeneralResponse<Product[]>) => ({ loading: false, data: res.data, error: null} as DashboardProps)),
       startWith({ loading: true, data: null, error: null } as DashboardProps),
-      catchError((error: GeneralResponse<Product[]>) => of({ loading: false, data: null, error: error.msg || 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
+      catchError(() => of({ loading: false, data: null, error: 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
     );
   }
 }
