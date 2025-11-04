@@ -1,0 +1,27 @@
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
+
+    color: var(--gray);
+    background-color: var(--soft-black);
+    box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+.right-part img {
+    width: 100px;
+    height: 30px;
+}
+
+/*^ RESPONSIVE */
+@media(max-width: 431px) and (max-height: 933px){
+    .left-part p{
+        font-size: .7em;
+    }
+
+    .right-part img {
+        width: 65px;
+        height: 20px;
+    }
+}

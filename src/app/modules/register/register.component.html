@@ -1,0 +1,39 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="img-cont">
+            <img src="assets/img/Logo-NoBg.png" alt="Logo">
+        </div>
+        <h1 class="inter-bold">REGISTRO</h1>
+        <p class="inter-semibold">Asegurese de agregar sus datos veridicos y actuales, esta información podra ser cambiada más adelante.</p>
+
+        <fieldset>
+            <legend>Datos de registro de usuario</legend>
+            <div class="input-group">
+                <input id="name" [class.invalid]="name.invalid && (name.touched || submitting)" formControlName="name" name="name" type="text" placeholder="Nombre completo" aria-label="Nombre completo" aria-describedby="name-tooltip" required>
+                <span *ngIf="getNameErrors().length > 0" id="name-tooltip" [class.error]="name.invalid && (name.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getNameErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getNameErrors().length - 1">
+                    </ng-container>
+                </span>
+            </div>
+            <div class="input-group">
+                <input id="username" [class.invalid]="username.invalid && (username.touched || submitting)" formControlName="username" name="username" type="text" placeholder="Nombre de usuario" aria-label="Nombre de usuario" aria-describedby="username-tooltip" required>
+                <span *ngIf="getUsernameErrors().length > 0" id="username-tooltip" [class.error]="username.invalid && (username.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getUsernameErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getUsernameErrors().length - 1">
+                    </ng-container>
+                </span>
+            </div>
+            <div class="input-group">
+                <input id="email" [class.invalid]="email.invalid && (email.touched || submitting)" formControlName="email" name="email" type="email" placeholder="Correo Electrónico" aria-label="Correo electrónico" aria-describedby="email-tooltip" required>
+                <span *ngIf="getEmailErrors().length > 0" id="email-tooltip" [class.error]="email.invalid && (email.touched || submitting)" class="inter-semibold tooltip">
+                    <ng-container *ngFor="let msg of getEmailErrors(); let i = index">
+                        {{ msg }}<br *ngIf="i < getEmailErrors().length - 1">
+                    </ng-container>
+                </span>
+            </div>
+        </fieldset>
+        
+        <button type="submit" class="inter-semibold" [disabled]="submitting">Registrar</button>
+    </form>
+</main>
