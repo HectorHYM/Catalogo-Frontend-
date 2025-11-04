@@ -5,12 +5,13 @@ import { Product } from '@core/models/product';
 import { ProductService } from '@core/services/product.service';
 import { ProductCardComponent } from '@shared/shared-components';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 type DashboardProps = { loading: boolean; data: Product[] | null; error: string | null; }
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, SearchBarComponent],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
