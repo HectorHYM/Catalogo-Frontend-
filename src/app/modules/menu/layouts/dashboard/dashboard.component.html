@@ -2,7 +2,7 @@
 <app-search-bar></app-search-bar>
 <ng-container *ngIf="state$ | async as DashboardProps" class="products-cont">
     <!--~ Aparece solo si loading es true ~-->
-    <div *ngIf="DashboardProps.loading" class="inter-semibold loading">Cargando...</div>
+    <div *ngIf="DashboardProps.loading" class="inter-semibold dashboard-msg">Cargando...</div>
     <!--~ Aparece solo si error es true ~-->
     <div *ngIf="DashboardProps.error" class="inter-semibold error">{{ DashboardProps.error }}</div>
     <!--~ Aparece solo si loading es false y hay elementos en data ~-->
@@ -10,7 +10,7 @@
         <app-product-card *ngFor="let p of DashboardProps.data" [product]="p"></app-product-card>
     </div>
     <!--~ Aparece solo si loading es false y data está vacío o es null (No existen productos) ~-->
-    <div *ngIf="!DashboardProps.loading && !DashboardProps.data" class="inter-semibold">
+    <div *ngIf="!DashboardProps.loading && (!DashboardProps.data || DashboardProps.data.length === 0)" class="inter-semibold dashboard-msg">
         No hay productos disponibles.
     </div>
 </ng-container>

@@ -6,6 +6,13 @@
     box-sizing: border-box;
 }
 
+.dashboard-msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
 @media (max-width: 431px) and (max-height: 933px){
     .cards-cont{
         grid-template-columns: 1fr;
