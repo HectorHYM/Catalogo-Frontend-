@@ -1,6 +1,6 @@
 <div class="search-bar-cont">
     <div class="search-bar">
-        <input type="text" placeholder="Buscar productos..." class="inter-medium search-bar">
+        <input type="text" [formControl]="control" placeholder="Buscar productos..." class="inter-medium search-bar" aria-label="Buscar productos">
         <img src="assets/img/Logo-NoBg.png" alt="Logo">
         <mat-icon class="filter-btn" aria-label="Filtrar productos">filter_list</mat-icon>
     </div>

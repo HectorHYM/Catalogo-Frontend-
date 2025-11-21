@@ -25,4 +25,27 @@ export class DashboardComponent {
       catchError(() => of({ loading: false, data: null, error: 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
     );
   }
+
+  onSearch(q: string){
+    const query = (q || '').trim().toLowerCase();
+    if(!query){
+      this.state$ = this.productSvc.getAllProducts().pipe(
+        map((res: GeneralResponse<Product[]>) => ({ loading: false, data: res.data, error: null} as DashboardProps)),
+        startWith({ loading: true, data: null, error: null } as DashboardProps),
+        catchError(() => of({ loading: false, data: null, error: 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
+      );
+    }
+
+    this.state$ = this.productSvc.getAllProducts().pipe(
+        map((res: GeneralResponse<Product[]>) => ({ loading: false, data: res.data?.filter(p => this.buildHaystack(p).includes(query)), error: null} as DashboardProps)),
+        startWith({ loading: true, data: null, error: null } as DashboardProps),
+        catchError(() => of({ loading: false, data: null, error: 'Error al cargar los productos, por favor intente más tarde.' } as DashboardProps))
+    );
+  }
+
+  buildHaystack = (p: Product) => {
+    return (p.name).toLowerCase();
+  };
+
+  trackById(index: number, item: Product) { return item.id };
 }
